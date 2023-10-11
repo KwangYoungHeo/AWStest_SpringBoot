@@ -77,15 +77,20 @@ public class PlayerService {
 		PlayerImageConverter<File, String> converter = new ImageToBase64();
 
 		String filePath = "static/player_img/" + p.getImgSrc();
-
-		Resource resource = resourceLoader.getResource(filePath);
+		// 1-2. 실제 파일로 불러오기
+		File TempFile = null;
 		String fileString = null;
-
 		try {
-			fileString = converter.converte(resource.getFile());
+			// 배포 시 파일로 불러오면 파일을 못찾기 때문에 inputStream으로 진행
+			InputStream inputStream = new ClassPathResource(filePath).getInputStream();
+			TempFile = File.createTempFile(p.getImgSrc(), "");
+			FileUtils.copyInputStreamToFile(inputStream, TempFile);
+			// 1-3. converter를 통해서 byte문자열로 변환
+			fileString = converter.converte(TempFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 
 		p.setImgSrc(fileString);
 
