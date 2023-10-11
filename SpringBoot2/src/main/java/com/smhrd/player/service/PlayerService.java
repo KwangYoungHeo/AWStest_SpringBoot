@@ -76,7 +76,7 @@ public class PlayerService {
 		JSONObject player = new JSONObject();
 		PlayerImageConverter<File, String> converter = new ImageToBase64();
 
-		String filePath = "classpath:/static/player_img/" + p.getImgSrc();
+		String filePath = "static/player_img/" + p.getImgSrc();
 
 		Resource resource = resourceLoader.getResource(filePath);
 		String fileString = null;
